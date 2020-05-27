@@ -2,37 +2,36 @@ version: 2.1
 orbs:
   slack: circleci/slack@3.4.2
 jobs:
-  build:
+  deploy_to_cluster:
     docker:
       - image: google/cloud-sdk
-    working_directory: /go/src/github.com/TaxiN/sample-app-ci
     steps:
-      - setup_remote_docker:
-          version: 18.06.0-ce
       - checkout
       - run:
-          name: Authenticate for pushing image to GCR
+          name: set up google cloud sdk
           command: |
-            gcloud --quiet config set project ${GCP_PROJECT}
-            gcloud --quiet config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
-            echo ${GCP_SERVICE_ACCOUNT_KEY} | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet auth configure-docker         
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              apt-get install -qq -y gettext
+              echo ${GCP_SERVICE_ACCOUNT_KEY} | gcloud auth activate-service-account --key-file=-
+              gcloud --quiet config set project ${GCP_PROJECT}
+              gcloud --quiet config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
+              gcloud --quiet container clusters get-credentials $GOOGLE_CLUSTER_NAME       
+            fi
       - run:
-          name: Build docker image and set image tag
-          command: docker build -t ${GCR_REPO}/${IMAGE_NAME}:$CIRCLE_SHA1 .
-      - run:
-          name: Push image to repository
-          command: docker push ${GCR_REPO}/${IMAGE_NAME}:$CIRCLE_SHA1
+          name: deploy manifests to gke cluster
+          command: |
+            kustomize build ~/${HOME} | kubectl apply -f -
+            kubectl rollout status deployment ${DEPLOYMENT_NAME}
       - slack/status:
           include_project_field: true
-          success_message: ':circleci-pass: Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
-          failure_message: ':circleci-fail: Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
+          success_message: 'Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
+          failure_message: 'Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
           webhook: ${SLACK_WEBHOOK}
 workflows:
   version: 2
   build:
     jobs:
-      - build:
+      - deploy_to_cluster:
           filters:
             branches:
               only: master
