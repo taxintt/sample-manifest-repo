@@ -4,6 +4,7 @@ metadata:
   name: nginx-deployment
   labels:
     app: nginx
+    env: prd
 spec:
   # prd: replicas 3
   replicas: 3
