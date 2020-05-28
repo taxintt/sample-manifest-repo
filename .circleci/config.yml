@@ -21,6 +21,7 @@ jobs:
       - run:
           name: deploy manifests to gke cluster
           command: |
+            echo ~/${HOME}/overlays/production
             kustomize build ~/${HOME}/overlays/staging | kubectl apply -f -
       - slack/status:
           include_project_field: true
@@ -46,6 +47,7 @@ jobs:
       - run:
           name: deploy manifests to gke cluster
           command: |
+            echo ~/${HOME}/overlays/production
             kustomize build ~/${HOME}/overlays/production | kubectl apply -f -
       - slack/status:
           include_project_field: true
