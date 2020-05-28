@@ -9,13 +9,15 @@ jobs:
       - checkout
       - run:
           name: set up google cloud sdk
+          # GOOGLE_CLUSTER_NAME : tf-test
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               apt-get install -qq -y gettext
-              echo ${GCP_SERVICE_ACCOUNT_KEY} | gcloud auth activate-service-account --key-file=-
+              echo ${ACCT_AUTH} | base64 -d > ${HOME}/account-auth.json
+              gcloud auth activate-service-account --key-file=${HOME}/account-auth.json
               gcloud --quiet config set project ${GCP_PROJECT}
               gcloud --quiet config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
-              gcloud --quiet container clusters get-credentials $GOOGLE_CLUSTER_NAME       
+              gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}    
             fi
       - run:
           name: deploy manifests to gke cluster
