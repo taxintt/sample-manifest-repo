@@ -3,6 +3,4 @@ kind: Kustomization
 
 namePrefix: common-
 resources:
-- /secrets
-- /service_conponents
 - deployment.yaml
