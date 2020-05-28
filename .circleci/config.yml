@@ -9,7 +9,6 @@ jobs:
       - checkout
       - run:
           name: set up google cloud sdk
-          # GOOGLE_CLUSTER_NAME : tf-test
           command: |
             if [ "${CIRCLE_BRANCH}" == "test" ]; then
               apt-get install -qq -y gettext
@@ -35,7 +34,6 @@ jobs:
       - checkout
       - run:
           name: set up google cloud sdk
-          # GOOGLE_CLUSTER_NAME : tf-test
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               apt-get install -qq -y gettext
