@@ -8,6 +8,24 @@ jobs:
     steps:
       - checkout
       - run:
+          name: apt-get update for wget
+          command: |
+            apt-get update
+            apt-get install -y wget
+      - run:
+          name: install kubectl
+          command: |
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+            mv kubectl /usr/local/bin
+            chmod +x /usr/local/bin/kubectl
+      - run:
+          name: install kustomize
+          command: |
+            wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv3.5.4/kustomize_v3.5.4_linux_amd64.tar.gz
+            tar xvzf kustomize_v3.5.4_linux_amd64.tar.gz
+            mv kustomize /usr/local/bin
+            chmod +x /usr/local/bin/kustomize
+      - run:
           name: set up google cloud sdk
           command: |
             if [ "${CIRCLE_BRANCH}" == "test" ]; then
@@ -21,7 +39,8 @@ jobs:
       - run:
           name: deploy manifests to gke cluster
           command: |
-            kustomize build ~/${HOME}/overlays/staging | kubectl apply -f -
+            echo ~/${HOME}/overlays/production
+            kustomize build /overlays/staging | kubectl apply -f -
       - slack/status:
           include_project_field: true
           success_message: 'Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
@@ -32,6 +51,24 @@ jobs:
       - image: google/cloud-sdk
     steps:
       - checkout
+      - run:
+          name: apt-get update for wget
+          command: |
+            apt-get update
+            apt-get install -y wget
+      - run:
+          name: install kubectl
+          command: |
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+            mv kubectl /usr/local/bin
+            chmod +x /usr/local/bin/kubectl
+      - run:
+          name: install kustomize
+          command: |
+            wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv3.5.4/kustomize_v3.5.4_linux_amd64.tar.gz
+            tar xvzf kustomize_v3.5.4_linux_amd64.tar.gz
+            mv kustomize /usr/local/bin
+            chmod +x /usr/local/bin/kustomize
       - run:
           name: set up google cloud sdk
           command: |
@@ -46,7 +83,8 @@ jobs:
       - run:
           name: deploy manifests to gke cluster
           command: |
-            kustomize build ~/${HOME}/overlays/production | kubectl apply -f -
+            echo ~/${HOME}/overlays/production
+            kustomize build /overlays/production | kubectl apply -f -
       - slack/status:
           include_project_field: true
           success_message: 'Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
