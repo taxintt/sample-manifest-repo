@@ -40,7 +40,7 @@ jobs:
           name: deploy manifests to gke cluster
           command: |
             echo ./overlays/production
-            kustomize build ./overlays/staging | kubectl apply -f -
+            kustomize build ./overlays/staging | kubectl apply -n test-cicd -f -
       - slack/status:
           include_project_field: true
           success_message: 'Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
@@ -84,7 +84,7 @@ jobs:
           name: deploy manifests to gke cluster
           command: |
             echo ./overlays/production
-            kustomize build ./overlays/production | kubectl apply -f -
+            kustomize build ./overlays/production | kubectl apply -n test-cicd -f -
       - slack/status:
           include_project_field: true
           success_message: 'Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
