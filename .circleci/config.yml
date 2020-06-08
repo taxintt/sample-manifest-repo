@@ -101,4 +101,4 @@ workflows:
       - deploy_to_staging_cluster:
           filters:
             branches:
-              only: test
+              only: stg
