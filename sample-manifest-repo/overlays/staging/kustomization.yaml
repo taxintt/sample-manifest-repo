@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namePrefix: stg-
+commonLabels:
+  app: test
+
+patchesStrategicMerge:
+- deployment_patch.yaml
+resources:
+- ../../base
+images:
+- name: '{GCR_REPO}/test-go-image'
+  newTag: 84d62cd3476f4f7d15b98501181ec0892e0d3e4b
