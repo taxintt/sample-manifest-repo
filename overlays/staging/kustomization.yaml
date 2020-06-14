@@ -4,8 +4,11 @@ kind: Kustomization
 namePrefix: stg-
 commonLabels:
   app: test
-bases:
-- ../../base
 
 patchesStrategicMerge:
 - deployment_patch.yaml
+resources:
+- ../../base
+images:
+- name: gcr.io/sample-cicd-271901/test-go-image
+  newTag: c422e53146abbdca21bad7e51ad4a1eae54fa62c
