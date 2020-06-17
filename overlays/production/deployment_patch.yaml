@@ -18,6 +18,7 @@ spec:
     spec:
       containers:
       - name: test-app-container
+        image: gcr.io/sample-cicd-271901/test-go-image:latest
         ports:
         - containerPort: 8888
         # prd: set resource limits and requests
