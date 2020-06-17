@@ -11,4 +11,4 @@ resources:
 - ../../base
 images:
 - name: gcr.io/sample-cicd-271901/test-go-image
-  newTag: 88a089773e6db243c57599e30f8dd27af6f4f18f
+  newTag: 6fc189ed4abd0c212870c73275d37382a9922bcb
