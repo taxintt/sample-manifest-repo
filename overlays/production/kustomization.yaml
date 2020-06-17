@@ -7,7 +7,5 @@ commonLabels:
 bases:
 - ../../base
 
-resources:
-- namespace.yaml
 patchesStrategicMerge:
 - deployment_patch.yaml

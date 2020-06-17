@@ -6,10 +6,6 @@ commonLabels:
   app: test
 
 resources:
-- namespace.yaml
-patchesStrategicMerge:
-- deployment_patch.yaml
-resources:
 - ../../base
 images:
 - name: gcr.io/sample-cicd-271901/test-go-image
