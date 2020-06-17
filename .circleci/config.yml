@@ -39,7 +39,7 @@ jobs:
       - run:
           name: deploy manifests to gke cluster
           command: |
-            echo ./overlays/production
+            kustomize diff ./overlays/staging
             kustomize build ./overlays/staging | kubectl apply -n stg -f -
       - slack/status:
           include_project_field: true
@@ -83,7 +83,7 @@ jobs:
       - run:
           name: deploy manifests to gke cluster
           command: |
-            echo ./overlays/production
+            kustomize diff ./overlays/production
             kustomize build ./overlays/production | kubectl apply -n prd -f -
       - slack/status:
           include_project_field: true

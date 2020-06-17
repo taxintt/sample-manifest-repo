@@ -5,7 +5,7 @@ namePrefix: stg-
 commonLabels:
   app: test
 
-resources:
+bases:
 - ../../base
 patchesStrategicMerge:
 - deployment_patch.yaml
