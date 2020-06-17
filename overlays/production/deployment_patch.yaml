@@ -18,7 +18,6 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx
         ports:
         - containerPort: 80
         # prd: set resource limits and requests
