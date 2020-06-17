@@ -1,4 +1,3 @@
-[![CircleCI](https://circleci.com/gh/TaxiN/sample-manifest-repo.svg?style=svg)](https://circleci.com/gh/TaxiN/sample-manifest-repo)
 # Demo: CI/CD pipeline
 
 ## Abstract
