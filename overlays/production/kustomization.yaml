@@ -4,8 +4,8 @@ kind: Kustomization
 namePrefix: prd-
 commonLabels:
   app: test
+
 bases:
 - ../../base
-
 patchesStrategicMerge:
 - deployment_patch.yaml

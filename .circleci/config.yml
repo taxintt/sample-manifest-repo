@@ -28,7 +28,7 @@ jobs:
       - run:
           name: set up google cloud sdk
           command: |
-            if [ "${CIRCLE_BRANCH}" == "test" ]; then
+            if [ "${CIRCLE_BRANCH}" == "stg" ]; then
               apt-get install -qq -y gettext
               echo ${ACCT_AUTH} | base64 -d > ${HOME}/account-auth.json
               gcloud auth activate-service-account --key-file=${HOME}/account-auth.json
@@ -39,8 +39,7 @@ jobs:
       - run:
           name: deploy manifests to gke cluster
           command: |
-            echo ./overlays/production
-            kustomize build ./overlays/staging | kubectl apply -f -
+            kustomize build ./overlays/staging | kubectl apply -n stg -f -
       - slack/status:
           include_project_field: true
           success_message: 'Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
@@ -83,8 +82,7 @@ jobs:
       - run:
           name: deploy manifests to gke cluster
           command: |
-            echo ./overlays/production
-            kustomize build ./overlays/production | kubectl apply -f -
+            kustomize build ./overlays/production | kubectl apply -n prd -f -
       - slack/status:
           include_project_field: true
           success_message: 'Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'

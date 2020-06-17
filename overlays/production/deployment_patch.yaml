@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: test-app
   labels:
-    app: nginx
+    app: test
     env: prd
 spec:
   # prd: replicas 3
   replicas: 3
   selector:
     matchLabels:
-      app: nginx
+      app: test
   template:
     metadata:
       labels:
-        app: nginx
+        app: test
     spec:
       containers:
-      - name: nginx
-        image: nginx
+      - name: test-app-container
+        image: gcr.io/sample-cicd-271901/test-go-image:latest
         ports:
-        - containerPort: 80
+        - containerPort: 8888
         # prd: set resource limits and requests
         resources:
           limits:
