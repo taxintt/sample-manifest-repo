@@ -6,6 +6,9 @@ jobs:
     docker:
       - image: google/cloud-sdk
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "e0:a9:bf:7d:57:2f:f2:ef:f8:a3:01:05:a9:6a:6a:0e"
       - checkout
       - run:
           name: apt-get update for wget
@@ -28,7 +31,7 @@ jobs:
       - run:
           name: set up google cloud sdk
           command: |
-            if [ "${CIRCLE_BRANCH}" == "test" ]; then
+            if [ "${CIRCLE_BRANCH}" == "stg" ]; then
               apt-get install -qq -y gettext
               echo ${ACCT_AUTH} | base64 -d > ${HOME}/account-auth.json
               gcloud auth activate-service-account --key-file=${HOME}/account-auth.json
@@ -40,7 +43,7 @@ jobs:
           name: deploy manifests to gke cluster
           command: |
             echo ./overlays/production
-            kustomize build ./overlays/staging | kubectl apply -f -
+            kustomize build ./overlays/staging | kubectl apply -n prd -f -
       - slack/status:
           include_project_field: true
           success_message: 'Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
@@ -84,7 +87,7 @@ jobs:
           name: deploy manifests to gke cluster
           command: |
             echo ./overlays/production
-            kustomize build ./overlays/production | kubectl apply -f -
+            kustomize build ./overlays/production | kubectl apply -n prd -f -
       - slack/status:
           include_project_field: true
           success_message: 'Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
