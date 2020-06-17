@@ -8,7 +8,7 @@ commonLabels:
 resources:
 - ../../base
 patchesStrategicMerge:
-- deployment.yaml
+- deployment_patch.yaml
 images:
 - name: gcr.io/sample-cicd-271901/test-go-image
   newTag: ad948427c121c88d29854ae4f47e3fde56b8ff17
