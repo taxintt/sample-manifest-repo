@@ -9,6 +9,6 @@ patchesStrategicMerge:
 - deployment_patch.yaml
 images:
 - name: gcr.io/sample-cicd-271901/test-go-image
-  newTag: 74fbb9ae0821dc0485c702f4110884789ea010b2
+  newTag: b082175caf57e247d37268f9b826068384e64986
 resources:
 - ../../base
