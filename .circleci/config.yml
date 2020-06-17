@@ -40,7 +40,7 @@ jobs:
           name: deploy manifests to gke cluster
           command: |
             echo ./overlays/production
-            kustomize build ./overlays/staging | kubectl apply -n prd -f -
+            kustomize build ./overlays/staging | kubectl apply -n stg -f -
       - slack/status:
           include_project_field: true
           success_message: 'Branch: $CIRCLE_BRANCH\nUser：$CIRCLE_USERNAME'
