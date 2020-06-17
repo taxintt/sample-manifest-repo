@@ -3,7 +3,7 @@
 
 ## Abstract
 This is the sample of CI/CD pipeline with Circle CI and Kustomize.<br>
-Please refer to [Application code repository](https://github.com/TaxiN/sample-app-ci).<br>
+Please refer to [Application Code repository](https://github.com/TaxiN/sample-app-ci).<br>
 
 
 ```
